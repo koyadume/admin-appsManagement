@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<plugin:page xmlns="http://piston.koyad.in/html5" xmlns:plugin="http://piston.koyad.in/plugin"
+	xmlns:c="http://piston.koyad.in/core" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://piston.koyad.in/html5 http://piston.koyad.in/html5 
+						http://piston.koyad.in/plugin http://piston.koyad.in/plugin 
+						http://piston.koyad.in/core http://piston.koyad.in/core">
+	<plugin:head>
+		<script type="text/javascript" src="js/app.js"></script> 
+	</plugin:head>
+	<plugin:body>
+	    <form name="enableDisablePlugins" method="POST" action="enableDisablePlugins">
+			<hidden property="action" />
+			
+			<c:if test="${not empty app}">
+    			<!-- breadcrumb -->
+		    	<div style="padding: 5px; background-color: #94d5c5; overflow-y: auto; margin: 10px 5px 0; line-height: 1.5em;">
+	    			<div style="float:left">
+	    				<a href="javascript:void(0)" style="text-decoration: none; font-weight: bold; color: white; font-size: 15px;">
+							<c:out value="${app.title}" />
+						</a>
+					</div>
+		    	</div>
+				    	
+				<!-- children  -->
+		       	<div style="padding: 10px;">
+		           	<table class="piston-table">
+						<tr>
+							<c:if test="${app.enabled}">
+								<th>Select</th>
+							</c:if>
+							<th>Name</th>
+							<th>Title</th>
+							<th>Enabled?</th>
+							<th>Actions</th>
+						</tr>
+						<c:iterate items="${app.plugins}" var="plugin">
+							<tr>
+								<c:if test="${app.enabled}">
+									<td style="text-align:center;">
+										<checkbox property="pluginIds" value="${plugin.id}" />
+									</td>
+								</c:if>
+								<td>
+									<c:out value="${plugin.name}" />
+								</td>
+								<td>
+									<c:out value="${plugin.title}" />
+								</td>
+								<td>
+									<c:out value="${plugin.enabled}" />
+								</td>
+								<td>
+									<plugin:actionURL action="pluginDetails" title="Manage permissions" class="img-btn" faClass="fa fa-pencil fa-lg" faStyle="font-size: 1.2em;">
+										<plugin:param name="id" value="${plugin.id}" />
+									</plugin:actionURL>
+									<plugin:actionURL action="getAppPluginPrefs" title="Edit preferences" class="img-btn" faClass="fa fa-gear fa-lg" faStyle="font-size: 1.2em;">
+										<plugin:param name="parentId" value="${plugin.id}" />
+										<plugin:param name="type" value="plugin" />
+									</plugin:actionURL>
+								</td>
+							</tr>
+						</c:iterate>
+					</table>
+
+					<c:if test="${app.enabled}">
+						<p style="padding-left: 10px;">
+							<pButton class="btn pseudo-enable-plugins" faClass="fa fa-check fa-lg" faStyle="font-size: 1.2em; padding-right: 6px;"> 
+			  					<c:out value="Enable" />
+			  				</pButton>
+			  				<pButton class="btn pseudo-disable-plugins" faClass="fa fa-close fa-lg" faStyle="font-size: 1.2em; padding-right: 6px;"> 
+			  					<c:out value="Disable" />
+			  				</pButton>
+		  				</p>
+					</c:if>
+		       	</div>
+	       	</c:if>
+		</form>
+	</plugin:body>
+</plugin:page>

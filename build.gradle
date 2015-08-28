@@ -1,0 +1,44 @@
+subprojects {
+    apply plugin: 'eclipse'
+    apply plugin: 'maven'
+    apply plugin: 'java'
+
+    sourceCompatibility = 1.8
+
+    group = 'in.koyad.piston.apps'
+    version = '1.0-rc1'
+
+    repositories {
+        mavenLocal()
+        mavenCentral()
+    }
+
+    libsDirName = 'package'
+
+    //required for emulating maven's provided scope as gradle java plugin does not provide this configuration
+    configurations {
+        provided
+    }
+     
+    sourceSets {
+        main {
+            compileClasspath += configurations.provided
+            runtimeClasspath += configurations.provided
+        }
+        test {
+            compileClasspath += configurations.provided
+            runtimeClasspath += configurations.provided
+        }
+    }
+
+    //this is to make sure that runtime dependencies are not shown in eclipse
+    eclipse {
+        classpath {
+            plusConfigurations = [ configurations.compile, configurations.provided ]
+        }
+    }
+
+    dependencies {
+        provided 'org.projectlombok:lombok:1.16.6'
+    }
+}

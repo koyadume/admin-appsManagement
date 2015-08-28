@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<plugin:page xmlns="http://piston.koyad.in/html5" xmlns:plugin="http://piston.koyad.in/plugin"
+	xmlns:c="http://piston.koyad.in/core" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://piston.koyad.in/html5 http://piston.koyad.in/html5 
+						http://piston.koyad.in/plugin http://piston.koyad.in/plugin 
+						http://piston.koyad.in/core http://piston.koyad.in/core">
+	<plugin:head>
+		<script type="text/javascript" src="js/app.js"></script> 
+	</plugin:head>
+	<plugin:body>
+	    <form name="enableDisableApps" method="POST" action="enableDisableApps">
+			<hidden property="action" />
+				    	
+			<!-- children  -->
+	       	<div style="padding: 10px;">
+	       		<c:if test="${not empty apps}">
+		           	<table class="piston-table">
+						<tr>
+							<th>Select</th>
+							<th>Name</th>
+							<th>Title</th>
+							<th>Enabled?</th>
+							<th>Actions</th>
+						</tr>
+						<c:iterate items="${apps}" var="app">
+							<tr>
+								<td style="text-align:center;">
+									<checkbox property="appIds" value="${app.id}" />
+								</td>
+								<td>
+									<c:out value="${app.name}" />
+								</td>
+								<td>
+									<a id="${app.id}" href="javascript:void(0)" class="pseudo-appTitle" style="text-decoration: none">
+										<c:out value="${app.title}" />
+									</a>
+								</td>
+								<td>
+									<c:out value="${app.enabled}" />
+								</td>
+								<td>
+									<plugin:actionURL action="appDetails" title="Manage permissions" class="img-btn" faClass="fa fa-pencil fa-lg" faStyle="font-size: 1.2em;">
+										<plugin:param name="id" value="${app.id}" />
+									</plugin:actionURL>
+									<plugin:actionURL action="getAppPluginPrefs" title="Edit preferences" class="img-btn" faClass="fa fa-gear fa-lg" faStyle="font-size: 1.2em;">
+										<plugin:param name="parentId" value="${app.id}" />
+										<plugin:param name="type" value="app" />
+									</plugin:actionURL>
+								</td>
+							</tr>
+						</c:iterate>
+					</table>
+
+					<p style="padding-left: 10px;">
+						<pButton class="btn pseudo-enable-apps" faClass="fa fa-check fa-lg" faStyle="font-size: 1.2em; padding-right: 6px;"> 
+		  					<c:out value="Enable" />
+		  				</pButton>
+		  				<pButton class="btn pseudo-disable-apps" faClass="fa fa-close fa-lg" faStyle="font-size: 1.2em; padding-right: 6px;"> 
+		  					<c:out value="Disable" />
+		  				</pButton>
+	  				</p>
+				</c:if>
+	       	</div>
+		</form>
+	</plugin:body>
+</plugin:page>

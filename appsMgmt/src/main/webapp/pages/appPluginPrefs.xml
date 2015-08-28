@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<plugin:page xmlns="http://piston.koyad.in/html5" xmlns:plugin="http://piston.koyad.in/plugin"
+	xmlns:c="http://piston.koyad.in/core" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://piston.koyad.in/html5 http://piston.koyad.in/html5 
+						http://piston.koyad.in/plugin http://piston.koyad.in/plugin 
+						http://piston.koyad.in/core http://piston.koyad.in/core">
+	<plugin:body>
+		<p style="padding: 10px; background-color: #94d5c5; line-height: 1em; font-weight: bold; color: white;">
+			<c:out value="Preferences" />
+		</p> 
+		
+		<c:if test="${not empty msg}">
+			<p>
+				<c:out value="${msg.details}"/>
+			</p>
+		</c:if>
+		
+		<div style="padding: 10px;">
+			<form name="appPluginPrefs" method="POST" action="saveAppPluginPrefs">
+				<c:if test="${not empty preferences}">
+					<table>
+							<tr>
+								<th>Name</th>
+								<th>Value</th>
+							</tr>
+							<c:iterate items="${preferences}" var="pref">
+								<tr>
+									<td>
+										<hidden property="ids" value="${pref.id}" />
+									
+										<c:out value="${pref.name}" />
+										<hidden property="names" value="${pref.name}" />
+										<hidden property="appIds" value="${pref.appId}" />
+										<hidden property="pluginIds" value="${pref.pluginId}" />
+									</td>
+									<td>
+										<text property="values" value="${pref.value}" />
+									</td>
+								</tr>
+							</c:iterate>
+					</table>
+					
+					<pButton class="btn pseudo-submit-button" faClass="fa fa-check fa-lg" faStyle="font-size: 1.2em; padding-right: 6px;"> 
+		  					<c:out value="Update" />
+		  			</pButton>
+				</c:if>
+				<c:if test="${empty preferences}">
+					<p>No preferences found.</p>
+				</c:if>
+			</form>
+		</div>
+	</plugin:body>
+</plugin:page>
