@@ -1,6 +1,4 @@
-ext	{
-	resFolder = 'admin-appsMgmt'
-}
+apply plugin: 'war'
 
 dependencies {
 

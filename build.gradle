@@ -6,7 +6,7 @@ subprojects {
     sourceCompatibility = 1.8
 
     group = 'in.koyad.piston.apps'
-    version = '1.0-rc1'
+    version = computeVersion()
 
     repositories {
         mavenLocal()
@@ -23,7 +23,6 @@ subprojects {
     sourceSets {
         main {
             compileClasspath += configurations.provided
-            runtimeClasspath += configurations.provided
         }
         test {
             compileClasspath += configurations.provided
@@ -42,3 +41,12 @@ subprojects {
         provided 'org.projectlombok:lombok:1.16.6'
     }
 }
+
+def computeVersion() {
+	File version = file('version') 
+	if(version.exists()) {
+		return version.text
+	}
+    return "1.x"
+}
+
