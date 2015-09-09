@@ -33,13 +33,13 @@ import in.koyad.piston.app.appMgmt.forms.PluginDetailsPluginForm;
 import in.koyad.piston.app.appMgmt.forms.ResPluginForm;
 import in.koyad.piston.common.exceptions.FrameworkException;
 import in.koyad.piston.common.utils.BeanPropertyUtils;
-import in.koyad.piston.common.utils.ServiceManager;
 import in.koyad.piston.core.sdk.api.PortalUserService;
+import in.koyad.piston.core.sdk.impl.PortalUserImpl;
 import in.koyad.piston.servicedelegate.model.PistonModelCache;
 
 public class ModelGenerator {
 	
-	private static final PortalUserService portalUserService = ServiceManager.getService(PortalUserService.class);
+	private static final PortalUserService portalUserService = new PortalUserImpl();
 
 	public static App getApp(AppDetailsPluginForm form) throws FrameworkException {
 		App app = new App();

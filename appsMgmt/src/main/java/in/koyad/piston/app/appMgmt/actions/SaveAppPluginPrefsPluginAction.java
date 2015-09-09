@@ -25,10 +25,10 @@ import in.koyad.piston.common.constants.MsgType;
 import in.koyad.piston.common.exceptions.FrameworkException;
 import in.koyad.piston.common.utils.LogUtil;
 import in.koyad.piston.common.utils.Message;
-import in.koyad.piston.common.utils.ServiceManager;
 import in.koyad.piston.controller.plugin.PluginAction;
 import in.koyad.piston.controller.plugin.annotations.AnnoPluginAction;
 import in.koyad.piston.core.sdk.api.PreferenceService;
+import in.koyad.piston.core.sdk.impl.PreferenceImpl;
 import in.koyad.piston.ui.utils.FormUtils;
 import in.koyad.piston.ui.utils.RequestContextUtil;
 
@@ -39,7 +39,7 @@ public class SaveAppPluginPrefsPluginAction extends PluginAction {
 	
 	public static final String ACTION_NAME = "saveAppPluginPrefs";
 	
-	private final PreferenceService prefService = ServiceManager.getService(PreferenceService.class);
+	private final PreferenceService prefService = new PreferenceImpl();
 
 	private static final LogUtil LOGGER = LogUtil.getLogger(SaveAppPluginPrefsPluginAction.class);
 	
