@@ -22,10 +22,10 @@ import in.koyad.piston.app.appMgmt.forms.EnableDisableAppsPluginForm;
 import in.koyad.piston.common.constants.FrameworkConstants;
 import in.koyad.piston.common.exceptions.FrameworkException;
 import in.koyad.piston.common.utils.LogUtil;
-import in.koyad.piston.common.utils.ServiceManager;
 import in.koyad.piston.controller.plugin.PluginAction;
 import in.koyad.piston.controller.plugin.annotations.AnnoPluginAction;
 import in.koyad.piston.core.sdk.api.PortalService;
+import in.koyad.piston.core.sdk.impl.PortalImpl;
 import in.koyad.piston.servicedelegate.model.PistonModelCache;
 import in.koyad.piston.ui.utils.FormUtils;
 
@@ -36,7 +36,7 @@ public class EnableDisableAppsPluginAction extends PluginAction {
 	
 	public static final String ACTION_NAME = "enableDisableApps";
 	
-	private final PortalService portalService = ServiceManager.getService(PortalService.class);
+	private final PortalService portalService = new PortalImpl();
 
 	private static final LogUtil LOGGER = LogUtil.getLogger(EnableDisableAppsPluginAction.class);
 	

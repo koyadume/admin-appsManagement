@@ -26,10 +26,10 @@ import in.koyad.piston.common.constants.MsgType;
 import in.koyad.piston.common.exceptions.FrameworkException;
 import in.koyad.piston.common.utils.LogUtil;
 import in.koyad.piston.common.utils.Message;
-import in.koyad.piston.common.utils.ServiceManager;
 import in.koyad.piston.controller.plugin.PluginAction;
 import in.koyad.piston.controller.plugin.annotations.AnnoPluginAction;
 import in.koyad.piston.core.sdk.api.PortalService;
+import in.koyad.piston.core.sdk.impl.PortalImpl;
 import in.koyad.piston.servicedelegate.model.PistonModelCache;
 import in.koyad.piston.ui.utils.FormUtils;
 import in.koyad.piston.ui.utils.RequestContextUtil;
@@ -44,7 +44,7 @@ public class SavePluginPluginAction extends PluginAction {
 	
 	public static final String ACTION_NAME = "savePlugin";
 	
-	private final PortalService portalService = ServiceManager.getService(PortalService.class);
+	private final PortalService portalService = new PortalImpl();
 
 	private static final LogUtil LOGGER = LogUtil.getLogger(SavePluginPluginAction.class);
 	
