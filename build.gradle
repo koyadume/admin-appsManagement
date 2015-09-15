@@ -7,6 +7,11 @@ subprojects {
 
     group = 'in.koyad.piston.apps'
     version = computeVersion()
+    
+    ext {
+        servletVersion = '3.1.0'
+        pistonVersion = '2.x'
+    }
 
     repositories {
         mavenLocal()
