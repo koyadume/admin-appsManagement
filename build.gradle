@@ -1,5 +1,5 @@
 subprojects {
-    apply plugin: 'eclipse'
+    apply plugin: 'eclipse-wtp'
     apply plugin: 'maven'
     apply plugin: 'java'
 
@@ -23,6 +23,7 @@ subprojects {
     //required for emulating maven's provided scope as gradle java plugin does not provide this configuration
     configurations {
         provided
+        compile.extendsFrom provided
     }
      
     sourceSets {
@@ -44,6 +45,11 @@ subprojects {
 
     dependencies {
         provided 'org.projectlombok:lombok:1.16.6'
+    }
+
+    task syncDependencies(type: Sync) {
+        from  configurations.runtime.minus(configurations.provided)
+        into 'build/dependencies/lib'
     }
 }
 
