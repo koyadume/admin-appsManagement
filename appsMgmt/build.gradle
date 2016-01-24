@@ -6,3 +6,5 @@ dependencies {
 			 "javax.servlet:javax.servlet-api:$servletVersion"
 
 }
+
+war.dependsOn syncDependencies
