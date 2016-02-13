@@ -39,7 +39,7 @@ public class SaveAppPluginPrefsPluginAction extends PluginAction {
 	
 	public static final String ACTION_NAME = "saveAppPluginPrefs";
 	
-	private final PreferenceService prefService = new PreferenceImpl();
+	private final PreferenceService prefService = PreferenceImpl.getInstance();
 
 	private static final LogUtil LOGGER = LogUtil.getLogger(SaveAppPluginPrefsPluginAction.class);
 	

@@ -69,7 +69,7 @@ public class GetAppPluginPrefsPluginAction extends PluginAction {
 					if(!preferences.stream().anyMatch(pref -> pref.getName().equalsIgnoreCase(appPref.getName()))) {
 						Preference pref = new Preference();
 						pref.setName(appPref.getName());
-						pref.setAppId(appId);
+						pref.setApp(app);
 						preferences.add(pref);
 					}
 				}
@@ -96,7 +96,7 @@ public class GetAppPluginPrefsPluginAction extends PluginAction {
 					if(!preferences.stream().anyMatch(pref -> pref.getName().equalsIgnoreCase(pluginPref.getName()))) {
 						Preference pref = new Preference();
 						pref.setName(pluginPref.getName());
-						pref.setPluginId(pluginId);
+						pref.setPlugin(plugin);
 						preferences.add(pref);
 					}
 				}
@@ -114,8 +114,8 @@ public class GetAppPluginPrefsPluginAction extends PluginAction {
 					if(!preferences.stream().anyMatch(pref -> pref.getName().equalsIgnoreCase(appPref.getName()))) {
 						Preference pref = new Preference();
 						pref.setName(appPref.getName());
-						pref.setAppId(app.getId());
-						pref.setPluginId(pluginId);
+						pref.setApp(app);
+						pref.setPlugin(plugin);
 						preferences.add(pref);
 					}
 				}

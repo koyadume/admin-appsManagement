@@ -36,7 +36,7 @@ public class EnableDisableAppsPluginAction extends PluginAction {
 	
 	public static final String ACTION_NAME = "enableDisableApps";
 	
-	private final PortalService portalService = new PortalImpl();
+	private final PortalService portalService = PortalImpl.getInstance();
 
 	private static final LogUtil LOGGER = LogUtil.getLogger(EnableDisableAppsPluginAction.class);
 	
