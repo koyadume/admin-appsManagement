@@ -34,7 +34,7 @@ import in.koyad.piston.ui.utils.FormUtils;
 )
 public class EnableDisablePluginsPluginAction extends PluginAction {
 	
-	private final PortalService portalService = new PortalImpl();
+	private final PortalService portalService = PortalImpl.getInstance();
 
 	private static final LogUtil LOGGER = LogUtil.getLogger(EnableDisablePluginsPluginAction.class);
 	

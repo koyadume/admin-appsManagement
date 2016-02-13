@@ -39,7 +39,7 @@ import in.koyad.piston.servicedelegate.model.PistonModelCache;
 
 public class ModelGenerator {
 	
-	private static final PortalUserService portalUserService = new PortalUserImpl();
+	private static final PortalUserService portalUserService = PortalUserImpl.getInstance();
 
 	public static App getApp(AppDetailsPluginForm form) throws FrameworkException {
 		App app = new App();
@@ -90,7 +90,7 @@ public class ModelGenerator {
 		return acl;
 	}
 	
-	public static List<Preference> getPreferences(AppPluginPrefsPluginForm form) {
+	public static List<Preference> getPreferences(AppPluginPrefsPluginForm form) throws FrameworkException {
 		List<Preference> prefs = new ArrayList<>();
 		
 		for(int i=0; i < form.getIds().length; i++) {
@@ -100,8 +100,8 @@ public class ModelGenerator {
 			pref.setId(form.getIds()[i]);
 			pref.setName(form.getNames()[i]);
 			pref.setValue(form.getValues()[i]);
-			pref.setAppId(form.getAppIds()[i]);
-			pref.setPluginId(form.getPluginIds()[i]);
+			pref.setApp(PistonModelCache.apps.get(form.getAppIds()[i]));
+			pref.setPlugin(PistonModelCache.plugins.get(form.getPluginIds()[i]));
 		}
 		
 		return prefs;

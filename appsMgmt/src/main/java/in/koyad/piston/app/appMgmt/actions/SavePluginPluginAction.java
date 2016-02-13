@@ -44,7 +44,7 @@ public class SavePluginPluginAction extends PluginAction {
 	
 	public static final String ACTION_NAME = "savePlugin";
 	
-	private final PortalService portalService = new PortalImpl();
+	private final PortalService portalService = PortalImpl.getInstance();
 
 	private static final LogUtil LOGGER = LogUtil.getLogger(SavePluginPluginAction.class);
 	
