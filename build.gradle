@@ -10,7 +10,7 @@ subprojects {
     
     ext {
         servletVersion = '3.1.0'
-        pistonVersion = '2.x'
+        pistonVersion = '2.3'
     }
 
     repositories {
@@ -23,7 +23,6 @@ subprojects {
     //required for emulating maven's provided scope as gradle java plugin does not provide this configuration
     configurations {
         provided
-        compile.extendsFrom provided
     }
      
     sourceSets {
@@ -46,11 +45,6 @@ subprojects {
     dependencies {
         provided 'org.projectlombok:lombok:1.16.6'
     }
-
-    task syncDependencies(type: Sync) {
-        from  configurations.runtime.minus(configurations.provided)
-        into 'build/dependencies/lib'
-    }
 }
 
 def computeVersion() {
@@ -58,6 +52,5 @@ def computeVersion() {
 	if(version.exists()) {
 		return version.text
 	}
-    return "1.x"
+    return "invalidVersion"
 }
-
