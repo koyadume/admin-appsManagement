@@ -1,9 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<plugin:page xmlns="http://piston.koyad.in/html5" xmlns:plugin="http://piston.koyad.in/plugin"
-	xmlns:c="http://piston.koyad.in/core" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-	xsi:schemaLocation="http://piston.koyad.in/html5 http://piston.koyad.in/html5 
-						http://piston.koyad.in/plugin http://piston.koyad.in/plugin 
-						http://piston.koyad.in/core http://piston.koyad.in/core">
+<plugin:page xmlns="html5" xmlns:plugin="plugin" xmlns:c="core">
 	<plugin:head>
 		<script type="text/javascript" src="js/globalPermissions.js" context="global"></script>
 	</plugin:head>		
@@ -100,7 +96,7 @@
 								</div>
 							</td>
 							<td style="text-align: center;">
-								<pButton class="btn pseudo-add-permission" faClass="fa fa-plus fa-lg" faStyle="font-size: 1.2em; padding-right: 6px;"> 
+								<pButton class="pt-btn pseudo-add-permission" faClass="fa fa-plus fa-lg" faStyle="font-size: 1.2em; padding-right: 6px;"> 
 				  					<c:out value="Add" />
 					  			</pButton>
 							</td>
@@ -125,7 +121,7 @@
 								</div>
 							</td>
 							<td style="text-align: center;">
-								<pButton class="btn pseudo-add-permission" faClass="fa fa-plus fa-lg" faStyle="font-size: 1.2em; padding-right: 6px;"> 
+								<pButton class="pt-btn pseudo-add-permission" faClass="fa fa-plus fa-lg" faStyle="font-size: 1.2em; padding-right: 6px;"> 
 			  						<c:out value="Add" />
 					  			</pButton>
 							</td>
@@ -150,7 +146,7 @@
 								</div>
 							</td>
 							<td style="text-align: center;">
-								<pButton class="btn pseudo-add-permission" faClass="fa fa-plus fa-lg" faStyle="font-size: 1.2em; padding-right: 6px;"> 
+								<pButton class="pt-btn pseudo-add-permission" faClass="fa fa-plus fa-lg" faStyle="font-size: 1.2em; padding-right: 6px;"> 
 			  						<c:out value="Add" />
 					  			</pButton>
 							</td>
@@ -159,10 +155,10 @@
 				</fieldset>
 				
 				<div style="text-align: right; margin-top: 20px;">
-					<pButton class="btn pseudo-submit-button" faClass="fa fa-save fa-lg" faStyle="font-size: 1.2em; padding-right: 6px;"> 
+					<pButton class="pt-btn pseudo-submit-button" faClass="fa fa-save fa-lg" faStyle="font-size: 1.2em; padding-right: 6px;"> 
 		  					<c:out value="Update" />
 		  			</pButton>
-					<plugin:actionURL action="listPlugins" class="btn" faClass="fa fa-close fa-lg" faStyle="font-size: 1.2em; padding-right: 6px;">
+					<plugin:actionURL action="listPlugins" class="pt-btn" faClass="fa fa-close fa-lg" faStyle="font-size: 1.2em; padding-right: 6px;">
 						<c:out value="Close" />
 						<plugin:param name="appId" value="${pluginDetails.appId}" />
 					</plugin:actionURL>

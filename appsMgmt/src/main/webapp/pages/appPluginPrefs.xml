@@ -1,9 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<plugin:page xmlns="http://piston.koyad.in/html5" xmlns:plugin="http://piston.koyad.in/plugin"
-	xmlns:c="http://piston.koyad.in/core" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-	xsi:schemaLocation="http://piston.koyad.in/html5 http://piston.koyad.in/html5 
-						http://piston.koyad.in/plugin http://piston.koyad.in/plugin 
-						http://piston.koyad.in/core http://piston.koyad.in/core">
+<plugin:page xmlns="html5" xmlns:plugin="plugin" xmlns:c="core">
 	<plugin:body>
 		<p style="padding: 10px; background-color: #94d5c5; line-height: 1em; font-weight: bold; color: white;">
 			<c:out value="Preferences" />
@@ -40,7 +36,7 @@
 							</c:iterate>
 					</table>
 					
-					<pButton class="btn pseudo-submit-button" faClass="fa fa-check fa-lg" faStyle="font-size: 1.2em; padding-right: 6px;"> 
+					<pButton class="pt-btn pseudo-submit-button" faClass="fa fa-check fa-lg" faStyle="font-size: 1.2em; padding-right: 6px;"> 
 		  					<c:out value="Update" />
 		  			</pButton>
 				</c:if>
