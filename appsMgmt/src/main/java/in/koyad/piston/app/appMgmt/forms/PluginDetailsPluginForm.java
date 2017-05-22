@@ -15,7 +15,7 @@
  */
 package in.koyad.piston.app.appMgmt.forms;
 
-import in.koyad.piston.controller.plugin.annotations.AnnoPluginForm;
+import in.koyad.piston.app.api.annotation.AnnoPluginForm;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -25,7 +25,7 @@ public class PluginDetailsPluginForm extends ResPluginForm {
 
 	public static final String FORM_NAME = "pluginDetails";
 	
-	private String appId;
+//	private String appId;
 	private String title;
 	
 }

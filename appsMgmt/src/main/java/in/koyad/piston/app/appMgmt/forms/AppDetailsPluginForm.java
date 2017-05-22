@@ -15,7 +15,7 @@
  */
 package in.koyad.piston.app.appMgmt.forms;
 
-import in.koyad.piston.controller.plugin.annotations.AnnoPluginForm;
+import in.koyad.piston.app.api.annotation.AnnoPluginForm;
 import lombok.Getter;
 import lombok.Setter;
 

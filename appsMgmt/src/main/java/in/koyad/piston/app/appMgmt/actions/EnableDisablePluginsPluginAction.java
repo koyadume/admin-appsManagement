@@ -18,41 +18,41 @@ package in.koyad.piston.app.appMgmt.actions;
 import java.text.MessageFormat;
 import java.util.Arrays;
 
+import in.koyad.piston.app.api.annotation.AnnoPluginAction;
+import in.koyad.piston.app.api.model.Request;
+import in.koyad.piston.app.api.plugin.BasePluginAction;
 import in.koyad.piston.app.appMgmt.forms.EnableDisablePluginsPluginForm;
-import in.koyad.piston.common.constants.FrameworkConstants;
-import in.koyad.piston.common.exceptions.FrameworkException;
-import in.koyad.piston.common.utils.LogUtil;
-import in.koyad.piston.controller.plugin.PluginAction;
-import in.koyad.piston.controller.plugin.annotations.AnnoPluginAction;
-import in.koyad.piston.core.sdk.api.PortalService;
-import in.koyad.piston.core.sdk.impl.PortalImpl;
-import in.koyad.piston.servicedelegate.model.PistonModelCache;
-import in.koyad.piston.ui.utils.FormUtils;
+import in.koyad.piston.cache.store.PortalCache;
+import in.koyad.piston.client.api.PortalClient;
+import in.koyad.piston.common.basic.constant.FrameworkConstants;
+import in.koyad.piston.common.basic.exception.FrameworkException;
+import in.koyad.piston.common.util.LogUtil;
+import in.koyad.piston.core.sdk.impl.PortalClientImpl;
 
 @AnnoPluginAction(
 	name = "enableDisablePlugins"
 )
-public class EnableDisablePluginsPluginAction extends PluginAction {
+public class EnableDisablePluginsPluginAction extends BasePluginAction {
 	
-	private final PortalService portalService = PortalImpl.getInstance();
+	private final PortalClient portalClient = PortalClientImpl.getInstance();
 
 	private static final LogUtil LOGGER = LogUtil.getLogger(EnableDisablePluginsPluginAction.class);
 	
 	@Override
-	protected String execute() throws FrameworkException {
+	public String execute(Request req) throws FrameworkException {
 		LOGGER.enterMethod("execute");
 		
 		//update data in db
-		EnableDisablePluginsPluginForm form = FormUtils.createFormWithReqParams(EnableDisablePluginsPluginForm.class);
-		portalService.enableDisablePlugins(Arrays.asList(form.getPluginIds()), form.getAction());
+		EnableDisablePluginsPluginForm form = req.getPluginForm(EnableDisablePluginsPluginForm.class);
+		portalClient.enableDisablePlugins(Arrays.asList(form.getPluginIds()), form.getAction());
 		
 		//update data in cache
 		for(String pluginId : form.getPluginIds()) {
 			switch(form.getAction()) {
 				case "enable":
-					PistonModelCache.plugins.get(pluginId).setEnabled(true);
+					PortalCache.plugins.get(pluginId).setEnabled(true);
 				case "disable":
-					PistonModelCache.plugins.get(pluginId).setEnabled(false);
+					PortalCache.plugins.get(pluginId).setEnabled(false);
 				default:
 					throw new FrameworkException(MessageFormat.format("Unsupported action {0}.", form.getAction()));
 			}

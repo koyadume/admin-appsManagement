@@ -15,35 +15,35 @@
  */
 package in.koyad.piston.app.appMgmt.actions;
 
-import in.koyad.piston.common.exceptions.FrameworkException;
-import in.koyad.piston.common.utils.LogUtil;
-import in.koyad.piston.controller.plugin.PluginAction;
-import in.koyad.piston.controller.plugin.annotations.AnnoPluginAction;
-import in.koyad.piston.servicedelegate.model.PistonModelCache;
-import in.koyad.piston.ui.utils.RequestContextUtil;
-
 import java.text.MessageFormat;
 
-import org.koyad.piston.core.model.App;
+import org.koyad.piston.business.model.App;
+
+import in.koyad.piston.app.api.annotation.AnnoPluginAction;
+import in.koyad.piston.app.api.model.Request;
+import in.koyad.piston.app.api.plugin.BasePluginAction;
+import in.koyad.piston.cache.store.PortalCache;
+import in.koyad.piston.common.basic.exception.FrameworkException;
+import in.koyad.piston.common.util.LogUtil;
 
 @AnnoPluginAction(
 	name = ListPluginsPluginAction.ACTION_NAME
 )
-public class ListPluginsPluginAction extends PluginAction {
+public class ListPluginsPluginAction extends BasePluginAction {
 
 	public static final String ACTION_NAME = "listPlugins";
 	
 	private static final LogUtil LOGGER = LogUtil.getLogger(ListPluginsPluginAction.class);
 	
 	@Override
-	protected String execute() throws FrameworkException {
+	public String execute(Request req) throws FrameworkException {
 		LOGGER.enterMethod("execute");
 		
-		String appId = RequestContextUtil.getParameter("appId");
+		String appId = req.getParameter("appId");
 		App app;
 		try {
-			app = PistonModelCache.apps.get(appId);
-			RequestContextUtil.getRequest().setAttribute("app", app);
+			app = PortalCache.apps.get(appId);
+			req.setAttribute("app", app);
 		} catch (FrameworkException ex) {
 			LOGGER.logException(ex);
 			throw new FrameworkException(MessageFormat.format("App with id '{0}' could not be loaded.", appId));

@@ -2,7 +2,6 @@ apply plugin: 'war'
 
 dependencies {
 
-	provided "in.koyad.piston.core:piston-ui:$pistonVersion",
-			 "javax.servlet:javax.servlet-api:$servletVersion"
+	provided "in.mechcloud.piston.core:piston-ui:$pistonCoreVersion"
 
 }

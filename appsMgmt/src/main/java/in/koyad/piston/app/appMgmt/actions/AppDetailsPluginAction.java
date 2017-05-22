@@ -15,36 +15,36 @@
  */
 package in.koyad.piston.app.appMgmt.actions;
 
-import org.koyad.piston.core.model.App;
+import org.koyad.piston.business.model.App;
 
+import in.koyad.piston.app.api.annotation.AnnoPluginAction;
+import in.koyad.piston.app.api.model.Request;
+import in.koyad.piston.app.api.plugin.BasePluginAction;
 import in.koyad.piston.app.appMgmt.forms.AppDetailsPluginForm;
 import in.koyad.piston.app.appMgmt.utils.PopulateFormUtil;
-import in.koyad.piston.common.exceptions.FrameworkException;
-import in.koyad.piston.common.utils.LogUtil;
-import in.koyad.piston.controller.plugin.PluginAction;
-import in.koyad.piston.controller.plugin.annotations.AnnoPluginAction;
-import in.koyad.piston.servicedelegate.model.PistonModelCache;
-import in.koyad.piston.ui.utils.RequestContextUtil;
+import in.koyad.piston.cache.store.PortalCache;
+import in.koyad.piston.common.basic.exception.FrameworkException;
+import in.koyad.piston.common.util.LogUtil;
 
 @AnnoPluginAction(
 	name = AppDetailsPluginAction.ACTION_NAME
 )
-public class AppDetailsPluginAction extends PluginAction {
+public class AppDetailsPluginAction extends BasePluginAction {
 	
 	public static final String ACTION_NAME = "appDetails";
 
 	private static final LogUtil LOGGER = LogUtil.getLogger(AppDetailsPluginAction.class);
 	
 	@Override
-	public String execute() throws FrameworkException {
+	public String execute(Request req) throws FrameworkException {
 		LOGGER.enterMethod("execute");
 		
-		String id = RequestContextUtil.getParameter("id");
-		App app = PistonModelCache.apps.get(id); 
+		String id = req.getParameter("id");
+		App app = PortalCache.apps.get(id); 
 		
 		AppDetailsPluginForm form = new AppDetailsPluginForm();
 		PopulateFormUtil.populateAppDetails(form, app);
-		RequestContextUtil.setRequestAttribute(AppDetailsPluginForm.FORM_NAME, form);
+		req.setAttribute(AppDetailsPluginForm.FORM_NAME, form);
 		
 		LOGGER.exitMethod("execute");
 		return "/pages/appDetails.xml";

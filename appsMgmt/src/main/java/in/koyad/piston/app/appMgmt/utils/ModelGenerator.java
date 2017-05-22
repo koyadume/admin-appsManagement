@@ -16,31 +16,26 @@
 package in.koyad.piston.app.appMgmt.utils;
 
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
+import java.util.regex.Pattern;
 
-import org.koyad.piston.core.model.App;
-import org.koyad.piston.core.model.Plugin;
-import org.koyad.piston.core.model.Preference;
-import org.koyad.piston.core.model.Resource;
-import org.koyad.piston.core.model.SecurityAcl;
-import org.koyad.piston.core.model.enums.Role;
+import org.koyad.piston.business.model.App;
+import org.koyad.piston.business.model.Members;
+import org.koyad.piston.business.model.Plugin;
+import org.koyad.piston.business.model.Preference;
+import org.koyad.piston.business.model.Resource;
+import org.koyad.piston.business.model.SecurityAcl;
+import org.koyad.piston.business.model.enums.RoleType;
 
 import in.koyad.piston.app.appMgmt.forms.AppDetailsPluginForm;
 import in.koyad.piston.app.appMgmt.forms.AppPluginPrefsPluginForm;
 import in.koyad.piston.app.appMgmt.forms.PluginDetailsPluginForm;
 import in.koyad.piston.app.appMgmt.forms.ResPluginForm;
-import in.koyad.piston.common.exceptions.FrameworkException;
-import in.koyad.piston.common.utils.BeanPropertyUtils;
-import in.koyad.piston.core.sdk.api.PortalUserService;
-import in.koyad.piston.core.sdk.impl.PortalUserImpl;
-import in.koyad.piston.servicedelegate.model.PistonModelCache;
+import in.koyad.piston.common.basic.exception.FrameworkException;
+import in.koyad.piston.common.util.BeanPropertyUtils;
 
 public class ModelGenerator {
 	
-	private static final PortalUserService portalUserService = PortalUserImpl.getInstance();
-
 	public static App getApp(AppDetailsPluginForm form) throws FrameworkException {
 		App app = new App();
 		populateResource(app, form);
@@ -54,7 +49,7 @@ public class ModelGenerator {
 	 */
 	public static Plugin getPlugin(PluginDetailsPluginForm form) throws FrameworkException {
 		Plugin plugin = new Plugin();
-		plugin.setApp(PistonModelCache.apps.get(form.getAppId()));
+//		plugin.setApp(PortalCache.apps.get(form.getAppId()));
 		populateResource(plugin, form);
 		return plugin;
 	}
@@ -64,28 +59,37 @@ public class ModelGenerator {
 		res.setAcls(getAcls(res, form));
 	}
 	
-	private static Set<SecurityAcl> getAcls(Resource res, ResPluginForm form) throws FrameworkException {
-		Set<SecurityAcl> acls = new HashSet<>();
+	private static List<SecurityAcl> getAcls(Resource res, ResPluginForm form) throws FrameworkException {
+		List<SecurityAcl> acls = new ArrayList<>();
 		if(null != form.getManager()) {
-			acls.add(getAcl(res, Role.MANAGER, form.getManager()));
+			acls.add(getAcl(res, RoleType.MANAGER, form.getManager()));
 		}
 		
 		if(null != form.getEditor()) {
-			acls.add(getAcl(res, Role.EDITOR, form.getEditor()));
+			acls.add(getAcl(res, RoleType.EDITOR, form.getEditor()));
 		}
 		
 		if(null != form.getUser()) {
-			acls.add(getAcl(res, Role.USER, form.getUser()));
+			acls.add(getAcl(res, RoleType.USER, form.getUser()));
 		}
 
 		return acls;
 	}
 	
-	private static SecurityAcl getAcl(Resource res, Role role, String[] typeAndExternalIds) throws FrameworkException {
+	private static SecurityAcl getAcl(Resource res, RoleType role, String[] typeAndExternalIds) throws FrameworkException {
 		SecurityAcl acl = new SecurityAcl();
-		acl.setResource(res);
 		acl.setRole(role);
-		acl.setMembers(portalUserService.getPrincipals(typeAndExternalIds));
+		List<String> users = new ArrayList<>();
+		List<String> groups = new ArrayList<>();
+		for(String typeAndExternalId : typeAndExternalIds) {
+			if(typeAndExternalId.startsWith("user:")) {
+				users.add(typeAndExternalId.split(Pattern.quote(":"))[1]);
+			} else if(typeAndExternalId.startsWith("group:")) {
+				groups.add(typeAndExternalId.split(Pattern.quote(":"))[1]);
+			}
+		}
+		Members members = new Members(users, groups);
+		acl.setMembers(members);
 		
 		return acl;
 	}
@@ -93,15 +97,8 @@ public class ModelGenerator {
 	public static List<Preference> getPreferences(AppPluginPrefsPluginForm form) throws FrameworkException {
 		List<Preference> prefs = new ArrayList<>();
 		
-		for(int i=0; i < form.getIds().length; i++) {
-			Preference pref = new Preference();
-			prefs.add(pref);
-			
-			pref.setId(form.getIds()[i]);
-			pref.setName(form.getNames()[i]);
-			pref.setValue(form.getValues()[i]);
-			pref.setApp(PistonModelCache.apps.get(form.getAppIds()[i]));
-			pref.setPlugin(PistonModelCache.plugins.get(form.getPluginIds()[i]));
+		for(int i=0; i < form.getNames().length; i++) {
+			prefs.add(new Preference(form.getNames()[i], form.getValues()[i]));
 		}
 		
 		return prefs;

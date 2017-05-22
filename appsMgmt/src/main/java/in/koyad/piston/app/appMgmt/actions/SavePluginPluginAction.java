@@ -17,22 +17,21 @@ package in.koyad.piston.app.appMgmt.actions;
 
 import java.text.MessageFormat;
 
-import org.koyad.piston.core.model.Plugin;
+import org.koyad.piston.business.model.Plugin;
 
+import in.koyad.piston.app.api.annotation.AnnoPluginAction;
+import in.koyad.piston.app.api.model.Request;
+import in.koyad.piston.app.api.plugin.BasePluginAction;
 import in.koyad.piston.app.appMgmt.forms.PluginDetailsPluginForm;
 import in.koyad.piston.app.appMgmt.utils.ModelGenerator;
+import in.koyad.piston.cache.store.PortalCache;
+import in.koyad.piston.client.api.PortalClient;
+import in.koyad.piston.common.basic.exception.FrameworkException;
 import in.koyad.piston.common.constants.Messages;
 import in.koyad.piston.common.constants.MsgType;
-import in.koyad.piston.common.exceptions.FrameworkException;
-import in.koyad.piston.common.utils.LogUtil;
-import in.koyad.piston.common.utils.Message;
-import in.koyad.piston.controller.plugin.PluginAction;
-import in.koyad.piston.controller.plugin.annotations.AnnoPluginAction;
-import in.koyad.piston.core.sdk.api.PortalService;
-import in.koyad.piston.core.sdk.impl.PortalImpl;
-import in.koyad.piston.servicedelegate.model.PistonModelCache;
-import in.koyad.piston.ui.utils.FormUtils;
-import in.koyad.piston.ui.utils.RequestContextUtil;
+import in.koyad.piston.common.util.LogUtil;
+import in.koyad.piston.common.util.Message;
+import in.koyad.piston.core.sdk.impl.PortalClientImpl;
 
 @AnnoPluginAction(
 	name = SavePluginPluginAction.ACTION_NAME
@@ -40,41 +39,41 @@ import in.koyad.piston.ui.utils.RequestContextUtil;
 /**
  * This action is used to update permissions for a plugin. 
  */
-public class SavePluginPluginAction extends PluginAction {
+public class SavePluginPluginAction extends BasePluginAction {
 	
 	public static final String ACTION_NAME = "savePlugin";
 	
-	private final PortalService portalService = PortalImpl.getInstance();
+	private final PortalClient portalClient = PortalClientImpl.getInstance();
 
 	private static final LogUtil LOGGER = LogUtil.getLogger(SavePluginPluginAction.class);
 	
 	@Override
-	protected String execute() throws FrameworkException {
+	public String execute(Request req) throws FrameworkException {
 		LOGGER.enterMethod("execute");
 		
 		try {
 			//update data in db
-			PluginDetailsPluginForm form = FormUtils.createFormWithReqParams(PluginDetailsPluginForm.class);
+			PluginDetailsPluginForm form = req.getPluginForm(PluginDetailsPluginForm.class);
 			Plugin newData = ModelGenerator.getPlugin(form);
-			portalService.updatePlugin(newData);
+			portalClient.updatePlugin(newData);
 			
 			//update version in form
 			form.setVersion(newData.getVersion());
 			
 			//update data in cache
-			Plugin oldData = PistonModelCache.plugins.get(newData.getId());
+			Plugin oldData = PortalCache.plugins.get(newData.getId());
 			oldData.refresh(newData);
 			
-			RequestContextUtil.setRequestAttribute(PluginDetailsPluginForm.FORM_NAME, form);
+			req.setAttribute(PluginDetailsPluginForm.FORM_NAME, form);
 			
 			if(null == form.getId()) {
-				RequestContextUtil.setRequestAttribute("msg", new Message(MsgType.INFO, MessageFormat.format(Messages.RESOURCE_CREATED_SUCCESSFULLY, "Plugin")));
+				req.setAttribute("msg", new Message(MsgType.INFO, MessageFormat.format(Messages.RESOURCE_CREATED_SUCCESSFULLY, "Plugin")));
 			} else {
-				RequestContextUtil.setRequestAttribute("msg", new Message(MsgType.INFO, MessageFormat.format(Messages.RESOURCE_UPDATED_SUCCESSFULLY, "Plugin")));
+				req.setAttribute("msg", new Message(MsgType.INFO, MessageFormat.format(Messages.RESOURCE_UPDATED_SUCCESSFULLY, "Plugin")));
 			}
 		} catch(FrameworkException ex) {
 			LOGGER.logException(ex);
-			RequestContextUtil.setRequestAttribute("msg", new Message(MsgType.ERROR, "Error occured while updating plugin details."));
+			req.setAttribute("msg", new Message(MsgType.ERROR, "Error occured while updating plugin details."));
 		}
 		
 		LOGGER.exitMethod("execute");

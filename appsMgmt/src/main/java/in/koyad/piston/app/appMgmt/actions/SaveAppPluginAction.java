@@ -17,23 +17,21 @@ package in.koyad.piston.app.appMgmt.actions;
 
 import java.text.MessageFormat;
 
-import org.koyad.piston.core.model.App;
+import org.koyad.piston.business.model.App;
 
+import in.koyad.piston.app.api.annotation.AnnoPluginAction;
+import in.koyad.piston.app.api.model.Request;
+import in.koyad.piston.app.api.plugin.BasePluginAction;
 import in.koyad.piston.app.appMgmt.forms.AppDetailsPluginForm;
 import in.koyad.piston.app.appMgmt.utils.ModelGenerator;
+import in.koyad.piston.cache.store.PortalCache;
+import in.koyad.piston.client.api.PortalClient;
+import in.koyad.piston.common.basic.exception.FrameworkException;
 import in.koyad.piston.common.constants.Messages;
 import in.koyad.piston.common.constants.MsgType;
-import in.koyad.piston.common.exceptions.FrameworkException;
-import in.koyad.piston.common.utils.LogUtil;
-import in.koyad.piston.common.utils.Message;
-import in.koyad.piston.controller.plugin.PluginAction;
-import in.koyad.piston.controller.plugin.annotations.AnnoPluginAction;
-import in.koyad.piston.core.sdk.api.PortalService;
-import in.koyad.piston.core.sdk.impl.PortalImpl;
-import in.koyad.piston.servicedelegate.model.PermissionsUtil;
-import in.koyad.piston.servicedelegate.model.PistonModelCache;
-import in.koyad.piston.ui.utils.FormUtils;
-import in.koyad.piston.ui.utils.RequestContextUtil;
+import in.koyad.piston.common.util.LogUtil;
+import in.koyad.piston.common.util.Message;
+import in.koyad.piston.core.sdk.impl.PortalClientImpl;
 
 /**
  * This action is used to update permissions for an app. 
@@ -41,44 +39,44 @@ import in.koyad.piston.ui.utils.RequestContextUtil;
 @AnnoPluginAction(
 	name = SaveAppPluginAction.ACTION_NAME
 )
-public class SaveAppPluginAction extends PluginAction {
+public class SaveAppPluginAction extends BasePluginAction {
 	
 	public static final String ACTION_NAME = "saveApp";
 	
-	private final PortalService portalService = PortalImpl.getInstance();
+	private final PortalClient portalClient = PortalClientImpl.getInstance();
 
 	private static final LogUtil LOGGER = LogUtil.getLogger(SaveAppPluginAction.class);
 	
 	@Override
-	protected String execute() throws FrameworkException {
+	public String execute(Request req) throws FrameworkException {
 		LOGGER.enterMethod("execute");
 		
 		try {
 			//update data in db
-			AppDetailsPluginForm form = FormUtils.createFormWithReqParams(AppDetailsPluginForm.class);
+			AppDetailsPluginForm form = req.getPluginForm(AppDetailsPluginForm.class);
 			App newData = ModelGenerator.getApp(form);
-			portalService.updateApp(newData);
+			portalClient.updateApp(newData);
 			
 			//update version in form
 			form.setVersion(newData.getVersion());
 			
 			//update data in cache
-			App oldData = PistonModelCache.apps.get(newData.getId());
+			App oldData = PortalCache.apps.get(newData.getId());
 			oldData.refresh(newData);
 			
 			//invalidate data in computation cache
-			PermissionsUtil.clearAppPermissions(newData);
+//			PermissionsUtil.clearAppPermissions(newData);
 			
-			RequestContextUtil.setRequestAttribute(AppDetailsPluginForm.FORM_NAME, form);
+			req.setAttribute(AppDetailsPluginForm.FORM_NAME, form);
 			
 			if(null == form.getId()) {
-				RequestContextUtil.setRequestAttribute("msg", new Message(MsgType.INFO, MessageFormat.format(Messages.RESOURCE_CREATED_SUCCESSFULLY, "App")));
+				req.setAttribute("msg", new Message(MsgType.INFO, MessageFormat.format(Messages.RESOURCE_CREATED_SUCCESSFULLY, "App")));
 			} else {
-				RequestContextUtil.setRequestAttribute("msg", new Message(MsgType.INFO, MessageFormat.format(Messages.RESOURCE_UPDATED_SUCCESSFULLY, "App")));
+				req.setAttribute("msg", new Message(MsgType.INFO, MessageFormat.format(Messages.RESOURCE_UPDATED_SUCCESSFULLY, "App")));
 			}
 		} catch(FrameworkException ex) {
 			LOGGER.logException(ex);
-			RequestContextUtil.setRequestAttribute("msg", new Message(MsgType.ERROR, "Error occured while updating app details."));
+			req.setAttribute("msg", new Message(MsgType.ERROR, "Error occured while updating app details."));
 		}
 		
 		LOGGER.exitMethod("execute");

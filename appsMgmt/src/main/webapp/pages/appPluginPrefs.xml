@@ -22,12 +22,8 @@
 							<c:iterate items="${preferences}" var="pref">
 								<tr>
 									<td>
-										<hidden property="ids" value="${pref.id}" />
-									
 										<c:out value="${pref.name}" />
 										<hidden property="names" value="${pref.name}" />
-										<hidden property="appIds" value="${pref.appId}" />
-										<hidden property="pluginIds" value="${pref.pluginId}" />
 									</td>
 									<td>
 										<text property="values" value="${pref.value}" />

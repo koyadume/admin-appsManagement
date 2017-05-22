@@ -15,13 +15,17 @@
  */
 package in.koyad.piston.app.appMgmt.plugins;
 
+import in.koyad.piston.app.api.annotation.AnnoPlugin;
+import in.koyad.piston.app.api.plugin.BasePlugin;
 import in.koyad.piston.app.appMgmt.actions.ListAppsPluginAction;
-import in.koyad.piston.common.utils.LogUtil;
-import in.koyad.piston.controller.plugin.Plugin;
-import in.koyad.piston.controller.plugin.annotations.AnnoPlugin;
+import in.koyad.piston.common.util.LogUtil;
 
-@AnnoPlugin(name = "appsManager", title = "Apps Manager", defaultAction = ListAppsPluginAction.ACTION_NAME)
-public class AppsManagerPlugin extends Plugin {
+@AnnoPlugin(
+		name = "appsManager", 
+		title = "Apps Manager", 
+		defaultAction = ListAppsPluginAction.ACTION_NAME
+)
+public class AppsManagerPlugin extends BasePlugin {
 
 	private static final LogUtil LOGGER = LogUtil.getLogger(AppsManagerPlugin.class);
 	

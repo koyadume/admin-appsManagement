@@ -15,7 +15,7 @@
  */
 package in.koyad.piston.app.appMgmt.forms;
 
-import in.koyad.piston.controller.plugin.annotations.AnnoPluginForm;
+import in.koyad.piston.app.api.annotation.AnnoPluginForm;
 import lombok.Data;
 
 @AnnoPluginForm(name = AppPluginPrefsPluginForm.FORM_NAME)
@@ -25,13 +25,13 @@ public class AppPluginPrefsPluginForm {
 	public static final String FORM_NAME = "appPluginPrefs";
 	
 	//required for fetching preferences
-	private String parentId;
+	private String id;
 	private String type;
 	
-	private String[] ids;
+//	private String[] ids;
 	private String[] names;
 	private String[] values;
-	private String[] appIds;
-	private String[] pluginIds;
+//	private String[] appIds;
+//	private String[] pluginIds;
 	
 }

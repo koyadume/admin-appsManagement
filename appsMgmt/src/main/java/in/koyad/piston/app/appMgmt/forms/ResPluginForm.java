@@ -15,11 +15,12 @@
  */
 package in.koyad.piston.app.appMgmt.forms;
 
-import in.koyad.piston.common.utils.AbstractForm;
+import in.koyad.piston.common.util.AbstractForm;
 import lombok.Getter;
 import lombok.Setter;
 
-@Getter @Setter
+@Getter 
+@Setter
 public abstract class ResPluginForm extends AbstractForm {
 	
 	private int version;

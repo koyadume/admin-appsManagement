@@ -15,32 +15,32 @@
  */
 package in.koyad.piston.app.appMgmt.actions;
 
-import in.koyad.piston.common.exceptions.FrameworkException;
-import in.koyad.piston.common.utils.LogUtil;
-import in.koyad.piston.controller.plugin.PluginAction;
-import in.koyad.piston.controller.plugin.annotations.AnnoPluginAction;
-import in.koyad.piston.servicedelegate.model.PistonModelCache;
-import in.koyad.piston.ui.utils.RequestContextUtil;
-
 import java.util.List;
 
-import org.koyad.piston.core.model.App;
+import org.koyad.piston.business.model.App;
+
+import in.koyad.piston.app.api.annotation.AnnoPluginAction;
+import in.koyad.piston.app.api.model.Request;
+import in.koyad.piston.app.api.plugin.BasePluginAction;
+import in.koyad.piston.cache.store.PortalCache;
+import in.koyad.piston.common.basic.exception.FrameworkException;
+import in.koyad.piston.common.util.LogUtil;
 
 @AnnoPluginAction(
 	name = ListAppsPluginAction.ACTION_NAME
 )
-public class ListAppsPluginAction extends PluginAction {
+public class ListAppsPluginAction extends BasePluginAction {
 
 	public static final String ACTION_NAME = "listApps";
 	
 	private static final LogUtil LOGGER = LogUtil.getLogger(ListAppsPluginAction.class);
 	
 	@Override
-	protected String execute() throws FrameworkException {
+	public String execute(Request req) throws FrameworkException {
 		LOGGER.enterMethod("execute");
 		
-		List<App> apps = PistonModelCache.apps.values();
-		RequestContextUtil.getRequest().setAttribute("apps", apps);
+		List<App> apps = PortalCache.apps.values();
+		req.setAttribute("apps", apps);
 		
 		LOGGER.exitMethod("execute");
 		return "/pages/apps.xml";

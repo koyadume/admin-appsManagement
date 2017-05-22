@@ -17,49 +17,53 @@ package in.koyad.piston.app.appMgmt.actions;
 
 import java.util.List;
 
-import org.koyad.piston.core.model.Preference;
+import org.koyad.piston.business.model.Preference;
 
+import in.koyad.piston.app.api.annotation.AnnoPluginAction;
+import in.koyad.piston.app.api.model.Request;
+import in.koyad.piston.app.api.plugin.BasePluginAction;
 import in.koyad.piston.app.appMgmt.forms.AppPluginPrefsPluginForm;
 import in.koyad.piston.app.appMgmt.utils.ModelGenerator;
+import in.koyad.piston.client.api.PreferenceClient;
+import in.koyad.piston.common.basic.exception.FrameworkException;
 import in.koyad.piston.common.constants.MsgType;
-import in.koyad.piston.common.exceptions.FrameworkException;
-import in.koyad.piston.common.utils.LogUtil;
-import in.koyad.piston.common.utils.Message;
-import in.koyad.piston.controller.plugin.PluginAction;
-import in.koyad.piston.controller.plugin.annotations.AnnoPluginAction;
-import in.koyad.piston.core.sdk.api.PreferenceService;
-import in.koyad.piston.core.sdk.impl.PreferenceImpl;
-import in.koyad.piston.ui.utils.FormUtils;
-import in.koyad.piston.ui.utils.RequestContextUtil;
+import in.koyad.piston.common.constants.PreferenceScope;
+import in.koyad.piston.common.util.LogUtil;
+import in.koyad.piston.common.util.Message;
+import in.koyad.piston.core.sdk.impl.PreferenceClientImpl;
 
 @AnnoPluginAction(
 	name = SaveAppPluginPrefsPluginAction.ACTION_NAME
 )
-public class SaveAppPluginPrefsPluginAction extends PluginAction {
+public class SaveAppPluginPrefsPluginAction extends BasePluginAction {
 	
 	public static final String ACTION_NAME = "saveAppPluginPrefs";
 	
-	private final PreferenceService prefService = PreferenceImpl.getInstance();
+	private final PreferenceClient prefClient = PreferenceClientImpl.getInstance();
 
 	private static final LogUtil LOGGER = LogUtil.getLogger(SaveAppPluginPrefsPluginAction.class);
 	
 	@Override
-	protected String execute() throws FrameworkException {
+	public String execute(Request req) throws FrameworkException {
 		LOGGER.enterMethod("execute");
 		List<Preference> preferences = null;
 		try {
-			AppPluginPrefsPluginForm form = FormUtils.createFormWithReqParams(AppPluginPrefsPluginForm.class);
+			AppPluginPrefsPluginForm form = req.getPluginForm(AppPluginPrefsPluginForm.class);
 			preferences = ModelGenerator.getPreferences(form);
 			
-			prefService.savePreferences(preferences);
+			if(form.getType().equalsIgnoreCase(PreferenceScope.APP)) {
+				prefClient.updateAppPreferences(form.getId(), preferences);
+			} else if(form.getType().equalsIgnoreCase(PreferenceScope.PLUGIN)) {
+				prefClient.updatePluginPreferences(form.getId(), preferences);
+			}
 			
-			RequestContextUtil.setRequestAttribute("msg", new Message(MsgType.INFO, "Preferences are updated successfully."));
+			req.setAttribute("msg", new Message(MsgType.INFO, "Preferences are updated successfully."));
 		} catch(FrameworkException ex) {
 			LOGGER.logException(ex);
-			RequestContextUtil.setRequestAttribute("msg", new Message(MsgType.ERROR, "Error occured while updating preferences."));
+			req.setAttribute("msg", new Message(MsgType.ERROR, "Error occured while updating preferences."));
 		}
 		
-		RequestContextUtil.setRequestAttribute("preferences", preferences);
+		req.setAttribute("preferences", preferences);
 		
 		LOGGER.exitMethod("execute");
 		return "/pages/appPluginPrefs.xml";

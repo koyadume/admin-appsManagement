@@ -15,24 +15,19 @@
  */
 package in.koyad.piston.app.appMgmt.utils;
 
+import java.util.ArrayList;
+import java.util.List;
+
+import org.koyad.piston.business.model.App;
+import org.koyad.piston.business.model.Plugin;
+import org.koyad.piston.business.model.SecurityAcl;
+import org.koyad.piston.business.model.enums.RoleType;
+
 import in.koyad.piston.app.appMgmt.forms.AppDetailsPluginForm;
 import in.koyad.piston.app.appMgmt.forms.PluginDetailsPluginForm;
 import in.koyad.piston.app.appMgmt.forms.ResPluginForm;
-import in.koyad.piston.common.utils.LogUtil;
-import in.koyad.piston.common.utils.BeanPropertyUtils;
-
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Set;
-
-import org.koyad.piston.core.model.App;
-import org.koyad.piston.core.model.Group;
-import org.koyad.piston.core.model.Plugin;
-import org.koyad.piston.core.model.Principal;
-import org.koyad.piston.core.model.SecurityAcl;
-import org.koyad.piston.core.model.User;
-import org.koyad.piston.core.model.enums.PrincipalType;
-import org.koyad.piston.core.model.enums.Role;
+import in.koyad.piston.common.util.BeanPropertyUtils;
+import in.koyad.piston.common.util.LogUtil;
 
 public class PopulateFormUtil {
 
@@ -51,26 +46,29 @@ public class PopulateFormUtil {
 		BeanPropertyUtils.copyProperties(editPluginForm, plugin);
 
 		//set appId
-		editPluginForm.setAppId(plugin.getApp().getId());
+//		editPluginForm.setAppId(plugin.getApp().getId());
 		
 		//copy permissions
 		copyAcls(plugin.getAcls(), editPluginForm);
 	}
 	
-	private static void copyAcls(Set<SecurityAcl> acls, ResPluginForm form) {
+	private static void copyAcls(List<SecurityAcl> acls, ResPluginForm form) {
 		for(SecurityAcl acl : acls) {
 			List<String> principals = new ArrayList<>();
-			for(Principal principal :  acl.getMembers()) {
-				String prefix  = "";
-				if(principal instanceof User) {
-					prefix = "user";
-				} else if(principal instanceof Group) {
-					prefix = "group";
-				}
-				principals.add(prefix + ":" + principal.getExternalId()); 
-			}
-			Role role = acl.getRole();
-			switch(role) {
+			acl.getMembers().getUsers().forEach(user -> principals.add("user:".concat(user)));
+			acl.getMembers().getGroups().forEach(group -> principals.add("group:".concat(group)));
+			
+//			for(Principal principal :  acl.getMembers()) {
+//				String prefix  = "";
+//				if(principal instanceof User) {
+//					prefix = "user";
+//				} else if(principal instanceof Group) {
+//					prefix = "group";
+//				}
+//				principals.add(prefix + ":" + principal.getExternalId()); 
+//			}
+			RoleType roleType = acl.getRole();
+			switch(roleType) {
 				case MANAGER:
 					form.setManager(principals.toArray(new String[principals.size()]));
 					break;
