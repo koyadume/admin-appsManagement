@@ -1,7 +1,17 @@
 apply plugin: 'war'
 
+version = computeVersion()
+
 dependencies {
 
 	provided "in.mechcloud.piston.core:piston-ui:$pistonCoreVersion"
 
+}
+
+def computeVersion() {
+	File version = file('version') 
+	if(version.exists()) {
+		return version.text
+	}
+    return "invalidVersion"
 }
