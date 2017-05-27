@@ -66,7 +66,7 @@ public class SaveAppPluginPrefsPluginAction extends BasePluginAction {
 		req.setAttribute("preferences", preferences);
 		
 		LOGGER.exitMethod("execute");
-		return "/pages/appPluginPrefs.xml";
+		return "/appPluginPrefs.xml";
 	}
 
 }

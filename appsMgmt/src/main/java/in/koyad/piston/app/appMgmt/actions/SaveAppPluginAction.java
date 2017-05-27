@@ -80,7 +80,7 @@ public class SaveAppPluginAction extends BasePluginAction {
 		}
 		
 		LOGGER.exitMethod("execute");
-		return "/pages/appDetails.xml";
+		return "/appDetails.xml";
 	}
 
 }

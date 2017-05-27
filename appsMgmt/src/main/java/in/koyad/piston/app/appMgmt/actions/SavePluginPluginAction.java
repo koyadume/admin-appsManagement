@@ -77,7 +77,7 @@ public class SavePluginPluginAction extends BasePluginAction {
 		}
 		
 		LOGGER.exitMethod("execute");
-		return "/pages/pluginDetails.xml";
+		return "/pluginDetails.xml";
 	}
 
 }

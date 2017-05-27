@@ -47,7 +47,7 @@ public class PluginDetailsPluginAction extends BasePluginAction {
 		req.setAttribute(PluginDetailsPluginForm.FORM_NAME, form);
 		
 		LOGGER.exitMethod("execute");
-		return "/pages/pluginDetails.xml";
+		return "/pluginDetails.xml";
 	}
 
 }

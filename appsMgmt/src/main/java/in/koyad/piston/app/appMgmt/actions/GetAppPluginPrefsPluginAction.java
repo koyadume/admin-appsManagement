@@ -173,7 +173,7 @@ public class GetAppPluginPrefsPluginAction extends BasePluginAction {
 		req.setAttribute("preferences", filteredPreferences);
 
 		LOGGER.exitMethod("execute");
-		return "/pages/appPluginPrefs.xml";
+		return "/appPluginPrefs.xml";
 	}
 	
 }

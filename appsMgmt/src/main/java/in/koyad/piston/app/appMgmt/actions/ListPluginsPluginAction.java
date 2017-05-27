@@ -50,7 +50,7 @@ public class ListPluginsPluginAction extends BasePluginAction {
 		}
 		
 		LOGGER.exitMethod("execute");
-		return "/pages/appPlugins.xml";
+		return "/appPlugins.xml";
 	}
 
 }

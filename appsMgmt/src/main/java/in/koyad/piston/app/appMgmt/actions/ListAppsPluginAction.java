@@ -43,7 +43,7 @@ public class ListAppsPluginAction extends BasePluginAction {
 		req.setAttribute("apps", apps);
 		
 		LOGGER.exitMethod("execute");
-		return "/pages/apps.xml";
+		return "/apps.xml";
 	}
 
 }

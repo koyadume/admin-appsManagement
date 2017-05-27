@@ -47,7 +47,7 @@ public class AppDetailsPluginAction extends BasePluginAction {
 		req.setAttribute(AppDetailsPluginForm.FORM_NAME, form);
 		
 		LOGGER.exitMethod("execute");
-		return "/pages/appDetails.xml";
+		return "/appDetails.xml";
 	}
 
 }
