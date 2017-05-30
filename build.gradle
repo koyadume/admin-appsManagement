@@ -5,7 +5,8 @@ subprojects {
 
     sourceCompatibility = 1.8
 
-    group = 'in.koyad.piston.apps'
+    group = 'in.koyad.piston.apps.admin'
+    version = computeVersion()
     
     ext {
         servletVersion = '3.1.0'
@@ -44,5 +45,13 @@ subprojects {
     dependencies {
         provided 'org.projectlombok:lombok:1.16.6'
     }
+}
+
+def computeVersion() {
+	File version = file('version') 
+	if(version.exists()) {
+		return version.text
+	}
+    return "invalidVersion"
 }
 
