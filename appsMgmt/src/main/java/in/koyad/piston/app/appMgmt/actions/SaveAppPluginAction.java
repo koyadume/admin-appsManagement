@@ -21,10 +21,11 @@ import org.koyad.piston.business.model.App;
 
 import in.koyad.piston.app.api.annotation.AnnoPluginAction;
 import in.koyad.piston.app.api.model.Request;
+import in.koyad.piston.app.api.model.Response;
 import in.koyad.piston.app.api.plugin.BasePluginAction;
 import in.koyad.piston.app.appMgmt.forms.AppDetailsPluginForm;
 import in.koyad.piston.app.appMgmt.utils.ModelGenerator;
-import in.koyad.piston.cache.store.PortalCache;
+import in.koyad.piston.cache.store.PortalStaticCache;
 import in.koyad.piston.client.api.PortalClient;
 import in.koyad.piston.common.basic.exception.FrameworkException;
 import in.koyad.piston.common.constants.Messages;
@@ -48,7 +49,7 @@ public class SaveAppPluginAction extends BasePluginAction {
 	private static final LogUtil LOGGER = LogUtil.getLogger(SaveAppPluginAction.class);
 	
 	@Override
-	public String execute(Request req) throws FrameworkException {
+	public String execute(Request req, Response resp) throws FrameworkException {
 		LOGGER.enterMethod("execute");
 		
 		try {
@@ -61,7 +62,7 @@ public class SaveAppPluginAction extends BasePluginAction {
 			form.setVersion(newData.getVersion());
 			
 			//update data in cache
-			App oldData = PortalCache.apps.get(newData.getId());
+			App oldData = PortalStaticCache.apps.get(newData.getId());
 			oldData.refresh(newData);
 			
 			//invalidate data in computation cache

@@ -20,9 +20,10 @@ import java.util.Arrays;
 
 import in.koyad.piston.app.api.annotation.AnnoPluginAction;
 import in.koyad.piston.app.api.model.Request;
+import in.koyad.piston.app.api.model.Response;
 import in.koyad.piston.app.api.plugin.BasePluginAction;
 import in.koyad.piston.app.appMgmt.forms.EnableDisableAppsPluginForm;
-import in.koyad.piston.cache.store.PortalCache;
+import in.koyad.piston.cache.store.PortalStaticCache;
 import in.koyad.piston.client.api.PortalClient;
 import in.koyad.piston.common.basic.constant.FrameworkConstants;
 import in.koyad.piston.common.basic.exception.FrameworkException;
@@ -41,7 +42,7 @@ public class EnableDisableAppsPluginAction extends BasePluginAction {
 	private static final LogUtil LOGGER = LogUtil.getLogger(EnableDisableAppsPluginAction.class);
 	
 	@Override
-	public String execute(Request req) throws FrameworkException {
+	public String execute(Request req, Response resp) throws FrameworkException {
 		LOGGER.enterMethod("execute");
 		
 		//update data in db
@@ -52,10 +53,10 @@ public class EnableDisableAppsPluginAction extends BasePluginAction {
 		for(String appId : form.getAppIds()) {
 			switch(form.getAction()) {
 				case "enable":
-					PortalCache.apps.get(appId).setEnabled(true);
+					PortalStaticCache.apps.get(appId).setEnabled(true);
 					break;
 				case "disable":
-					PortalCache.apps.get(appId).setEnabled(false);
+					PortalStaticCache.apps.get(appId).setEnabled(false);
 					break;
 				default:
 					throw new FrameworkException(MessageFormat.format("Unsupported action {0}.", form.getAction()));

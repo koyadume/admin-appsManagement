@@ -27,10 +27,12 @@ import org.koyad.piston.business.model.Preference;
 
 import in.koyad.piston.app.api.annotation.AnnoPluginAction;
 import in.koyad.piston.app.api.model.Request;
+import in.koyad.piston.app.api.model.Response;
 import in.koyad.piston.app.api.plugin.BasePluginAction;
 import in.koyad.piston.app.appMgmt.forms.AppPluginPrefsPluginForm;
-import in.koyad.piston.cache.store.PortalCache;
+import in.koyad.piston.cache.store.PortalStaticCache;
 import in.koyad.piston.client.api.PreferenceClient;
+import in.koyad.piston.common.basic.ServiceLoaderUtil;
 import in.koyad.piston.common.basic.exception.FrameworkException;
 import in.koyad.piston.common.constants.PreferenceScope;
 import in.koyad.piston.common.util.LogUtil;
@@ -49,10 +51,10 @@ public class GetAppPluginPrefsPluginAction extends BasePluginAction {
 	
 	private static final LogUtil LOGGER = LogUtil.getLogger(GetAppPluginPrefsPluginAction.class);
 	
-	private final PreferenceClient prefClient = PreferenceClientImpl.getInstance();
+	private final PreferenceClient prefClient = ServiceLoaderUtil.getInstance(PreferenceClient.class);
 	
 	@Override
-	public String execute(Request req) throws FrameworkException {
+	public String execute(Request req, Response resp) throws FrameworkException {
 		LOGGER.enterMethod("execute");
 		
 		AppPluginPrefsPluginForm form = req.getPluginForm(AppPluginPrefsPluginForm.class);
@@ -62,7 +64,7 @@ public class GetAppPluginPrefsPluginAction extends BasePluginAction {
 		if(form.getType().equalsIgnoreCase(PreferenceScope.APP)) {
 			//get app data
 			String appId = form.getId();
-			App app = PortalCache.apps.get(appId);
+			App app = PortalStaticCache.apps.get(appId);
 			
 			//read preferences from db
 			List<Preference> prefsValues = prefClient.getAppPreferences(app.getId());
@@ -99,7 +101,7 @@ public class GetAppPluginPrefsPluginAction extends BasePluginAction {
 		} else if(form.getType().equalsIgnoreCase(PreferenceScope.PLUGIN)) {
 			//get plugin metadata
 			String pluginId = form.getId();
-			Plugin plugin = PortalCache.plugins.get(pluginId);
+			Plugin plugin = PortalStaticCache.plugins.get(pluginId);
 			
 			//read preferences from db
 			List<Preference> prefsValues = prefClient.getPluginPreferences(plugin.getId());

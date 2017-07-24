@@ -21,16 +21,17 @@ import org.koyad.piston.business.model.Preference;
 
 import in.koyad.piston.app.api.annotation.AnnoPluginAction;
 import in.koyad.piston.app.api.model.Request;
+import in.koyad.piston.app.api.model.Response;
 import in.koyad.piston.app.api.plugin.BasePluginAction;
 import in.koyad.piston.app.appMgmt.forms.AppPluginPrefsPluginForm;
 import in.koyad.piston.app.appMgmt.utils.ModelGenerator;
 import in.koyad.piston.client.api.PreferenceClient;
+import in.koyad.piston.common.basic.ServiceLoaderUtil;
 import in.koyad.piston.common.basic.exception.FrameworkException;
 import in.koyad.piston.common.constants.MsgType;
 import in.koyad.piston.common.constants.PreferenceScope;
 import in.koyad.piston.common.util.LogUtil;
 import in.koyad.piston.common.util.Message;
-import in.koyad.piston.core.sdk.impl.PreferenceClientImpl;
 
 @AnnoPluginAction(
 	name = SaveAppPluginPrefsPluginAction.ACTION_NAME
@@ -39,12 +40,12 @@ public class SaveAppPluginPrefsPluginAction extends BasePluginAction {
 	
 	public static final String ACTION_NAME = "saveAppPluginPrefs";
 	
-	private final PreferenceClient prefClient = PreferenceClientImpl.getInstance();
+	private final PreferenceClient prefClient = ServiceLoaderUtil.getInstance(PreferenceClient.class);
 
 	private static final LogUtil LOGGER = LogUtil.getLogger(SaveAppPluginPrefsPluginAction.class);
 	
 	@Override
-	public String execute(Request req) throws FrameworkException {
+	public String execute(Request req, Response resp) throws FrameworkException {
 		LOGGER.enterMethod("execute");
 		List<Preference> preferences = null;
 		try {

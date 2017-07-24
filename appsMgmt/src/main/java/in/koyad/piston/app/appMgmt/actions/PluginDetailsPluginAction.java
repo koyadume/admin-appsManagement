@@ -19,10 +19,11 @@ import org.koyad.piston.business.model.Plugin;
 
 import in.koyad.piston.app.api.annotation.AnnoPluginAction;
 import in.koyad.piston.app.api.model.Request;
+import in.koyad.piston.app.api.model.Response;
 import in.koyad.piston.app.api.plugin.BasePluginAction;
 import in.koyad.piston.app.appMgmt.forms.PluginDetailsPluginForm;
 import in.koyad.piston.app.appMgmt.utils.PopulateFormUtil;
-import in.koyad.piston.cache.store.PortalCache;
+import in.koyad.piston.cache.store.PortalStaticCache;
 import in.koyad.piston.common.basic.exception.FrameworkException;
 import in.koyad.piston.common.util.LogUtil;
 
@@ -36,11 +37,11 @@ public class PluginDetailsPluginAction extends BasePluginAction {
 	private static final LogUtil LOGGER = LogUtil.getLogger(PluginDetailsPluginAction.class);
 	
 	@Override
-	public String execute(Request req) throws FrameworkException {
+	public String execute(Request req, Response resp) throws FrameworkException {
 		LOGGER.enterMethod("execute");
 		
 		String id = req.getParameter("id");
-		Plugin plugin = PortalCache.plugins.get(id);
+		Plugin plugin = PortalStaticCache.plugins.get(id);
 		
 		PluginDetailsPluginForm form = new PluginDetailsPluginForm();
 		PopulateFormUtil.populatePluginDetails(form, plugin);

@@ -21,8 +21,9 @@ import org.koyad.piston.business.model.App;
 
 import in.koyad.piston.app.api.annotation.AnnoPluginAction;
 import in.koyad.piston.app.api.model.Request;
+import in.koyad.piston.app.api.model.Response;
 import in.koyad.piston.app.api.plugin.BasePluginAction;
-import in.koyad.piston.cache.store.PortalCache;
+import in.koyad.piston.cache.store.PortalStaticCache;
 import in.koyad.piston.common.basic.exception.FrameworkException;
 import in.koyad.piston.common.util.LogUtil;
 
@@ -36,13 +37,13 @@ public class ListPluginsPluginAction extends BasePluginAction {
 	private static final LogUtil LOGGER = LogUtil.getLogger(ListPluginsPluginAction.class);
 	
 	@Override
-	public String execute(Request req) throws FrameworkException {
+	public String execute(Request req, Response resp) throws FrameworkException {
 		LOGGER.enterMethod("execute");
 		
 		String appId = req.getParameter("appId");
 		App app;
 		try {
-			app = PortalCache.apps.get(appId);
+			app = PortalStaticCache.apps.get(appId);
 			req.setAttribute("app", app);
 		} catch (FrameworkException ex) {
 			LOGGER.logException(ex);

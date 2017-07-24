@@ -49,7 +49,7 @@ public class ModelGenerator {
 	 */
 	public static Plugin getPlugin(PluginDetailsPluginForm form) throws FrameworkException {
 		Plugin plugin = new Plugin();
-//		plugin.setApp(PortalCache.apps.get(form.getAppId()));
+//		plugin.setApp(PortalStaticCache.apps.get(form.getAppId()));
 		populateResource(plugin, form);
 		return plugin;
 	}

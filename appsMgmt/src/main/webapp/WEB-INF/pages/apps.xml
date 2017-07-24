@@ -47,7 +47,7 @@
 						</c:iterate>
 					</table>
 
-					<p style="padding-left: 10px;">
+					<p style="padding-left: 10px; margin-top: 15px;">
 						<pButton class="pt-btn pseudo-enable-apps" faClass="fa fa-check fa-lg" faStyle="font-size: 1.2em; padding-right: 6px;"> 
 		  					<c:out value="Enable" />
 		  				</pButton>
